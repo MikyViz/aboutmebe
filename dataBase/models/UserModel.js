@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 export default (sequelize)=>{
 const User = sequelize.define("User", {
-    // Model attributes are defined here
     userId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -94,5 +93,6 @@ User.prototype.toAuthJSON = function () {
         token: this.generateJWT(),
     };
 };
-}
+return User
+};
 // export default User;

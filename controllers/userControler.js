@@ -1,20 +1,20 @@
-import  User  from '../dataBase/models/UserModel.js';
+import User from '../dataBase/models/UserModel.js';
 import bcrypt from 'bcrypt';
 
 export default class UserController {
 
     static async createUser(req, res) {
         try {
-            // const { name, email, password } = req.body;
+            const { name, email, password } = req.body;
 
             // Check if user already exists
-            const existingUser = await User.findOne(req.body.email);
+            const existingUser = await User.findOne({ where: { email} });
             if (existingUser) {
                 return res.status(400).json({ message: 'User already exists🥸' });
             }
 
             // Hash the password
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = req.body;
             newUser.password = hashedPassword;
 
@@ -25,12 +25,12 @@ export default class UserController {
             if (user) {
                 user.token = user.generateJWT();
                 await user.save();
-                res.status(201).json({ user, token });
+                res.status(201).json({ user });
             }
 
-            res.status(404).json({msg: "💩 I tried to create the user, bro... not today..."});
+            return res.status(404).json({ msg: "💩 I tried to create the user, bro... not today..." });
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
     }
 
