@@ -1,4 +1,4 @@
-import { User } from '../database/models/UserModel.js';
+import  User  from '../dataBase/models/UserModel.js';
 import bcrypt from 'bcrypt';
 
 export default class UserController {

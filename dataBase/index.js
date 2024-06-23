@@ -1,12 +1,14 @@
 import { Sequelize } from 'sequelize';
-import { User } from './models/UserModel';
 
-const sequelize = new Sequelize('database', 'username', 'password', {
+const sequelize = new Sequelize('AboutMeDB', 'miky', 'vizenovsky', {
   // host: 'localhost',
   // dialect: 'mysql'
   dialect: 'sqlite',
   storage: './myDB.sqlite'
 });
+
+import defineUserModel from './models/UserModel.js';
+const User = defineUserModel(sequelize);
 
 const syncModels = async () => {
   try {
@@ -19,7 +21,7 @@ const syncModels = async () => {
   }
 }
 
-export default {
+export {
     syncModels,
     sequelize,
     User

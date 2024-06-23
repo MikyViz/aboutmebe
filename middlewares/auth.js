@@ -1,5 +1,5 @@
 import sequelize from 'sequelize'
-import { User } from '../database/index.js'
+import {User}  from '../dataBase/index.js'
 import jwt from 'jsonwebtoken'
 
 const auth = async (req, res, next) => {

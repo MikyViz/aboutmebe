@@ -1,15 +1,16 @@
-import { sequelize } from "../index.js";
+// import sequelize  from "../index.js";
 import { DataTypes, literal } from "sequelize";
 import jwt from "jsonwebtoken";
-import { UUIDV4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
+export default (sequelize)=>{
 const User = sequelize.define("User", {
     // Model attributes are defined here
     userId: {
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
         autoIncrement: false,
-        defaultValue: UUIDV4,
+        defaultValue: () => uuidv4(),
     },
     firstName: {
         type: DataTypes.STRING,
@@ -47,14 +48,11 @@ const User = sequelize.define("User", {
     },
     token: {
         type: DataTypes.STRING
-        // allowNull defaults to true
     },
-    role: {
-        type: DataTypes.STRING,
-        defaultValue: 'user',
-        type: DataTypes.ENUM("admin", "user"),
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
-        // allowNull defaults to true
     },
     status: {
         type: DataTypes.ENUM("active", "inactive")
@@ -96,5 +94,5 @@ User.prototype.toAuthJSON = function () {
         token: this.generateJWT(),
     };
 };
-
-export default User;
+}
+// export default User;

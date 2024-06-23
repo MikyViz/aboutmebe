@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { syncModels } from "./database/index.js";
+import {syncModels}  from "./dataBase/index.js";
 import UserRouter from "./routers/userRouter.js";
 
 
