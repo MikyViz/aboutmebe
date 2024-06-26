@@ -1,12 +1,13 @@
 // import sequelize  from "../index.js";
-import { DataTypes, literal } from "sequelize";
+import sequelize  from "../db-sqlite.js";
+import { DataTypes } from "sequelize";
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
-export default (sequelize)=>{
+// export default (sequelize)=>{
 const User = sequelize.define("User", {
     userId: {
         type: DataTypes.UUID,
-        allowNull: false,
+        // allowNull: false,
         primaryKey: true,
         autoIncrement: false,
         defaultValue: () => uuidv4(),
@@ -44,6 +45,9 @@ const User = sequelize.define("User", {
         validate: {
             len: [8, 100],
         },
+    },
+    avatar: {
+        type: DataTypes.STRING,
     },
     token: {
         type: DataTypes.STRING
@@ -93,6 +97,6 @@ User.prototype.toAuthJSON = function () {
         token: this.generateJWT(),
     };
 };
-return User
-};
-// export default User;
+// return User
+// };
+export default User;

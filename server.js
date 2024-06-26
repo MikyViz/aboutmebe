@@ -1,14 +1,19 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import {syncModels}  from "./dataBase/index.js";
 import UserRouter from "./routers/userRouter.js";
-
+import {fileURLToPath} from 'url';
 
 const port = parseInt(process.env.PORT) || process.argv[3] || 8081;
 const app = express();
 dotenv.config();
 syncModels();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const parentDir = path.resolve(__dirname, '..');
 
 const corsOptions = {
   origin: '*',
@@ -25,6 +30,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', UserRouter);
+
+app.use('/imgs', express.static(path.join(__dirname, 'imgs')));
 
 app.listen(port, () => {
   console.log(`Listening on http://localhost:${port}`);

@@ -1,6 +1,7 @@
 import sequelize from './db-sqlite.js';
-import defineUserModel from './models/UserModel.js';
-const User = defineUserModel(sequelize);
+// import defineUserModel from './models/UserModel.js';
+import User from './models/UserModel.js';
+// const User = defineUserModel(sequelize);
 
 const syncModels = async () => {
   try {
@@ -13,7 +14,7 @@ const syncModels = async () => {
   }
 }
 
-export {
+export { 
     syncModels,
     sequelize,
     User
