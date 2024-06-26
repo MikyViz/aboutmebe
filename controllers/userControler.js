@@ -1,34 +1,39 @@
-import User from '../dataBase/models/UserModel.js';
-import bcrypt from 'bcrypt';
-import path from 'path';
+import UserService from '../services/userService.js'
 
 export default class UserController {
-    
+
     static async createUser(req, res) {
         try {
-            const { name, email, password } = req.body;
-            
-            const existingUser = await User.findOne({ where: { email } });
-            if (existingUser) {
-                return res.status(400).json({ message: 'User already exists🥸' });
+            const user = await UserService.createUser(req);
+            if (typeof user === 'number') {
+                switch (user) {
+                    case 404:
+                        return res.status(404).json({ msg: 'User already exists🥸' });
+                        // break;
+                    case 418:
+                        return res.status(418).json({ msg: 'All you need is coffe☕🤠' });
+                        // break;
+                    case 400:
+                        return res.status(400).json({ msg: "I tried to register your user, bro... but something went wrong💩" });
+                        // break;
+                    default:
+                        break;
+                }
             }
-            
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const newUser = req.body;
-            newUser.password = hashedPassword;
-            newUser.avatar = req.file.path;
-            
-            const user = await User.create(newUser);
-
-            if (user) {
-                user.token = user.generateJWT();
-                await user.save();
-                res.status(201).json({ user });
-            }
-
-            return res.status(404).json({ msg: "💩 I tried to create the user, bro... not today..." });
+            res.status(201).json(user);
         } catch (error) {
-            return res.status(500).json({ message: error.message });
+            res.status(500).json({ msg: error.message });
         }
-    };
+    }
+    static async login(req, res) {
+        try {
+            const user = await UserService.login(req.body);
+            if (!user) {
+                return res.status(404).json({ msg: "User not found🙈" });
+            }
+            res.status(200).json(user);
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
+    }
 };
