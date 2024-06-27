@@ -1,7 +1,6 @@
 import sequelize from './db-sqlite.js';
-// import defineUserModel from './models/UserModel.js';
 import User from './models/UserModel.js';
-// const User = defineUserModel(sequelize);
+import Review from './models/ReviewModel.js';
 
 const syncModels = async () => {
   try {
@@ -17,5 +16,6 @@ const syncModels = async () => {
 export { 
     syncModels,
     sequelize,
-    User
+    User,
+    Review
   }

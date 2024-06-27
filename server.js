@@ -4,11 +4,13 @@ import dotenv from 'dotenv';
 import path from 'path';
 import {syncModels}  from "./dataBase/index.js";
 import UserRouter from "./routers/userRouter.js";
+import ReviewRouter from "./routers/reviewRouter.js";
 import {fileURLToPath} from 'url';
 
-const port = parseInt(process.env.PORT) || process.argv[3] || 8081;
-const app = express();
 dotenv.config();
+// const port = parseInt(process.env.PORT) || process.argv[3] || 8081;
+const port = 8081;
+const app = express();
 syncModels();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,6 +32,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', UserRouter);
+app.use('/review', ReviewRouter);
 
 app.use('/imgs', express.static(path.join(__dirname, 'imgs')));
 

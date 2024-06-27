@@ -1,8 +1,6 @@
 import User from '../dataBase/models/UserModel.js';
 import bcrypt from 'bcrypt';
 import path from 'path';
-import { where } from 'sequelize';
-
 export default class UserService {
 
     static async createUser(req) {
@@ -19,7 +17,7 @@ export default class UserService {
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = req.body;
             newUser.password = hashedPassword;
-            newUser.avatar = req.file.path;
+            newUser.avatar = req.file ? req.file.path : null;
 
             const user = await User.create(newUser);
 
@@ -34,11 +32,21 @@ export default class UserService {
             throw new Error(error);
         }
     };
-    static async login(req, res) {
+    static async login({email, password}) {
         try {
-            const user = User.findOne({ where: { email: req.body.email } });
+            const user = await User.findOne({ where: { email: email } });
+            if (user) {
+                const match = await bcrypt.compare(password, user.password);
+                if (match) {
+                    user.token = user.generateJWT();
+                    await user.save();
+                    console.log("login is OK👌");
+                    return user;
+                }
+            }
+            return null;
         } catch (error) {
-
+            throw new Error(error);
         }
     }
 };

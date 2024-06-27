@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 // export default (sequelize)=>{
 const User = sequelize.define("User", {
-    userId: {
+    id: {
         type: DataTypes.UUID,
         // allowNull: false,
         primaryKey: true,
@@ -31,10 +31,9 @@ const User = sequelize.define("User", {
             isEmail: true,
         },
     },
-    address: {
-        type: DataTypes.STRING
-        // allowNull defaults to true
-    },
+    // address: {
+    //     type: DataTypes.STRING
+    // },
     phone: {
         type: DataTypes.STRING
         // allowNull defaults to true
@@ -73,7 +72,7 @@ const User = sequelize.define("User", {
     // Other model options go here
 });
 
-User.prototype.toJSON = function () {
+User.toJSON = function () {
     const values = Object.assign({}, this.get());
     delete values.password;
     return values;
