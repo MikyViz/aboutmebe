@@ -9,7 +9,7 @@ import {fileURLToPath} from 'url';
 
 dotenv.config();
 // const port = parseInt(process.env.PORT) || process.argv[3] || 8081;
-const port = 8081;
+const port = process.env.PORT;
 const app = express();
 syncModels();
 
